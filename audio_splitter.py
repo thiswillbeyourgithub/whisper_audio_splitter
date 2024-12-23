@@ -27,8 +27,9 @@ import pdb
 import faulthandler
 import traceback
 
-from logger import whi, yel, red, shared, cache_dir
-from typechecker import optional_typecheck
+from .logger import whi, red, cache_dir
+from .typechecker import optional_typecheck
+from .misc import splitter_sox_effects
 
 stt_cache = joblib.Memory(cache_dir / "audio_splitter_cache", verbose=0)
 
@@ -986,7 +987,7 @@ class AudioSplitter:
             f2 = "\"" + str(new_filename.name) + "\""
             d = "\"" + str(file.parent.absolute()) + "\""
 
-            sox_oneliner = " ".join([" ".join(effect).strip() for effect in shared.splitter_sox_effects]).strip()
+            sox_oneliner = " ".join([" ".join(effect).strip() for effect in splitter_sox_effects]).strip()
             sox_cmd = f"cd {d} && rm tmpoutput*.mp3 ; sox {f1} tmpoutput.mp3 {sox_oneliner} : newfile : restart && cat tmpoutput*.mp3 > {f2} && rm -v tmpout*.mp3"
             self.exec(sox_cmd)
             assert new_filename.exists(), f"new file not found: '{new_filename}'"
@@ -1015,7 +1016,7 @@ class AudioSplitter:
             waveform, sample_rate = torchaudio.sox_effects.apply_effects_tensor(
                     clean_waveform,
                     sample_rate,
-                    shared.splitter_sox_effects,
+                    splitter_sox_effects,
                     )
 
             # write to wav, then convert to mp3
