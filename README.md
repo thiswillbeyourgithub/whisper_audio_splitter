@@ -48,10 +48,12 @@ python -m whisper_audio_splitter \
 
 ## 🔧 How It Works
 
-1. Processes files from `untouched_dir`
-2. Uses STT to detect split words/patterns
-3. Creates segments in `splitted_dir`
-4. Moves processed files to `done_dir`
+1. Load audio files from `untouched_dir`
+2. Remove silence (multiple methods supported)
+3. Transcribe the text using STT (using either either Deepgram, Replicate or even self hosted whisper)
+4. Find the time location of where the prompt is pronounced (by default 'Stop' but can be any string)
+5. Split the original unsilenced audio into segments at those location and put the results in `splitted_dir`
+6. Moves the large files (original and unsilenced) to `done_dir`
 
 ## 📝 Note on Project Status
 
