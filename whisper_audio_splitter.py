@@ -1,3 +1,45 @@
+"""Audio Splitter Tool
+
+This tool splits audio files into segments based on detected "stop" words using speech-to-text.
+It supports multiple STT backends (Whisper via Replicate API, Deepgram API) and various audio
+processing features.
+
+Key Features:
+- Splits audio files when specific words/patterns are detected (default: "stop")
+- Supports multiple speech-to-text backends (Whisper, Deepgram)
+- Handles silence removal and audio preprocessing
+- Supports batch processing of multiple files
+- Caches transcription results to avoid re-processing
+- Can handle long audio files by splitting and parallel processing
+
+Basic Usage:
+    python -m whisper_audio_splitter --help  # Show all options
+    
+    # Basic splitting with defaults (French, "stop" as split word)
+    python -m whisper_audio_splitter \
+        --untouched_dir=/path/to/input \
+        --splitted_dir=/path/to/output \
+        --done_dir=/path/to/processed
+
+    # Customize language and split words
+    python -m whisper_audio_splitter \
+        --language=en \
+        --stop_list="['stop','pause','break']" \
+        --untouched_dir=./input \
+        --splitted_dir=./output \
+        --done_dir=./done
+
+Requirements:
+- REPLICATE_API_KEY or DEEPGRAM_API_KEY environment variable must be set
+- Input/output directories must exist
+- Audio files should be in mp3 or wav format
+
+The tool will:
+1. Process files from untouched_dir
+2. Create split segments in splitted_dir
+3. Move processed files to done_dir
+"""
+
 import sys
 import textwrap
 import json
