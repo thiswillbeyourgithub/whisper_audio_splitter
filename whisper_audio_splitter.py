@@ -15,7 +15,7 @@ Key Features:
 Basic Usage:
     python -m whisper_audio_splitter --help  # Show all options
     
-    # Basic splitting with defaults (French, "stop" as split word)
+    # Basic splitting with defaults (English, "stop" as split word)
     python -m whisper_audio_splitter \
         --untouched_dir=/path/to/input \
         --splitted_dir=/path/to/output \
@@ -111,7 +111,7 @@ class AudioSplitter:
     stop_list: list, default re.compile(r"[\W^]s?top[\W$]", flags=re.IGNORECASE)
         List of strings that when found will trigger the audio splitting.
 
-    language: str, default fr
+    language: str, default en
         Language code for speech recognition.
 
     n_todo: int, default 1
@@ -169,7 +169,7 @@ class AudioSplitter:
         stop_list: List = [
             re.compile(r"(\W|^)s?top(\W|$)", flags=re.IGNORECASE),
             ],
-        language: str = "fr",
+        language: str = "en",
         n_todo: int = 1,
 
         stop_source: str = "api",
