@@ -41,7 +41,7 @@ python -m whisper_audio_splitter \
 
 ## 📋 Requirements
 
-- Python 3.7+
+- Python 3.11+
 - REPLICATE_API_KEY or DEEPGRAM_API_KEY environment variable
 - Input/output directories must exist
 - Audio files in mp3 or wav format
