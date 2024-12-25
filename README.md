@@ -2,6 +2,8 @@
 
 A powerful tool that automatically splits audio files when specific words or patterns are detected using speech-to-text technology. Perfect for breaking down long recordings into meaningful segments!
 
+The original idea was simple: I wanted to create Anki flashcards by recording long sessions of me speaking cards out loud, saying "STOP" between each card. This tool then uses speech recognition to detect these stops and split the recording into individual card segments, preserving the original audio for reference. That worked very well for me so I ended up making it usable for others!
+
 ## 🌟 Key Features
 
 - 🔍 Splits audio when specific words are detected (default: "stop")
