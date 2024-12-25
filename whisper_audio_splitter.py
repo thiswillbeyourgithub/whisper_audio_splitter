@@ -69,9 +69,9 @@ import pdb
 import faulthandler
 import traceback
 
-from .logger import whi, red, cache_dir
-from .typechecker import optional_typecheck
-from .misc import splitter_sox_effects
+from logger import whi, red, cache_dir
+from typechecker import optional_typecheck
+from misc import splitter_sox_effects
 
 stt_cache = joblib.Memory(cache_dir / "audio_splitter_cache", verbose=0)
 

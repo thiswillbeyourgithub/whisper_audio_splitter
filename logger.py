@@ -1,4 +1,3 @@
-import gradio as gr
 from typing import Callable, Any
 from joblib import hash as jhash
 import time
@@ -12,7 +11,7 @@ import json
 from functools import wraps
 from platformdirs import user_cache_dir, user_log_dir
 
-from .typechecker import optional_typecheck
+from typechecker import optional_typecheck
 
 cache_dir = Path(user_cache_dir(appname="WhisperAudioSplitter"))
 assert cache_dir.parent.exists() or cache_dir.parent.parent.exists(

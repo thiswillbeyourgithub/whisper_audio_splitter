@@ -1,3 +1,4 @@
+from typing import List
 # sox effects when splitting long audio
 splitter_sox_effects: List[str] = [
         ["norm"],  # normalize audio
