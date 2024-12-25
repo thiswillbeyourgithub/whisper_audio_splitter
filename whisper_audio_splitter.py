@@ -87,61 +87,76 @@ today = f"{d.day:02d}_{d.month:02d}"
 
 @optional_typecheck
 class AudioSplitter:
-    """
+    """Audio Splitter class for processing and splitting audio files based on detected words.
+
+    Directory Structure:
+    - untouched_dir: Location of original large audio files to be processed
+    - splitted_dir: Where the individual segments/splits will be saved after processing
+    - done_dir: Where original files are moved after processing. Both the original file
+               and its unsilenced version (if silence removal was used) will be stored
+               here. No files are deleted during processing.
+
+    Parameters:
+    -----------
     prompt: str, default 'Stop! '
-        prompt used to guide whisper. None to disable
+        Prompt used to guide whisper. None to disable.
 
     debug: bool, default False
-        if True, a breakpoint() will be called before exporting the splits
-        and the original audio will not be moved. Also disabled multithreading.
-        Also automatically open the debugger in case of issue, and before
+        If True, a breakpoint() will be called before exporting the splits
+        and the original audio will not be moved. Also disables multithreading.
+        Also automatically opens the debugger in case of issue, and before
         the final export opens a breakpoint() to let you check everything
         is in order.
 
     stop_list: list, default re.compile(r"[\W^]s?top[\W$]", flags=re.IGNORECASE)
-        list of strings that when found will trigger the audio splitting.
+        List of strings that when found will trigger the audio splitting.
 
     language: str, default fr
+        Language code for speech recognition.
 
     n_todo: int, default 1
-        number of files to split by default. Can be used to only process
+        Number of files to split by default. Can be used to only process
         a certain batch.
 
     stop_source: str, default 'api'
-        if 'local_json', then an output from whispercpp is expected. This
+        If 'local_json', then an output from whispercpp is expected. This
         is not yet implemented. The idea is to be able to do the audio
         splitting locally using whispercpp instead of relying on replicate.
 
     untouched_dir: str or Path
+        Directory containing original audio files to process.
 
-    splitted_dir: see untouched_dir
+    splitted_dir: str or Path
+        Directory where split segments will be saved.
 
-    done_dir: see untouched_dir
+    done_dir: str or Path
+        Directory where processed original files are moved. Both original and
+        unsilenced versions are preserved here.
 
     trim_splitted_silence: bool, default False
-        if True, will try to remove leading and ending silence of each
+        If True, will try to remove leading and ending silence of each
         audio split before exporting them. This can cause problems with
-        words being cut so I disabled it by default. If the file after
+        words being cut so disabled by default. If the file after
         trimming is unexpectedly short, the trimming will be ignored. This
         is so that loud splits that don't contain silence are not botched.
 
     global_slowdown_factor float, default 1.0
-        if lower than 1.0, then the long audio will be slowed down before
+        If lower than 1.0, then the long audio will be slowed down before
         processing. This can help whisper.
 
     second_pass_slowdown_factor float, default 1.0
-        like global_slowdown_factor but for the second pass
+        Like global_slowdown_factor but for the second pass.
 
     split_audio_longer_than int, default 10
-        if an input audio is longer than that minute long, split it into
-        subaudios then merge the transcripts. This is because 1 the
+        If an input audio is longer than that minute long, split it into
+        subaudios then merge the transcripts. This is because 1) the
         replicate backend seems to have issues with long and heavy audio
-        files and 2 it allows multithreading.
-        File within 10% of this value will not be split. For example
+        files and 2) it allows multithreading.
+        Files within 10% of this value will not be split. For example
         a 10.3 minute audio file will not be split but a 12 minute will.
 
-    silence_method, str, default 'torchaudio'
-        can be any of 'torchaudio', 'pydub' or 'sox_cli'
+    silence_method: str, default 'torchaudio'
+        Can be any of 'torchaudio', 'pydub' or 'sox_cli'
         * 'torchaudio' works using the sox filters present in utils/shared_module.py
         * 'sox_cli' only works on linux and needs sox installed
         * 'pydub' is excrutiatingly slow
