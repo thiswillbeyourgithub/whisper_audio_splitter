@@ -34,10 +34,17 @@ Requirements:
 - Input/output directories must exist
 - Audio files should be in mp3 or wav format
 
+Directory Structure:
+- untouched_dir: Location of original large audio files to be processed
+- splitted_dir: Where the individual segments/splits will be saved after processing
+- done_dir: Where original files are moved after processing. Both the original file
+           and its unsilenced version (if silence removal was used) will be stored
+           here. No files are deleted during processing.
+
 The tool will:
-1. Process files from untouched_dir
-2. Create split segments in splitted_dir
-3. Move processed files to done_dir
+1. Process original files from untouched_dir
+2. Create split segments in splitted_dir based on detected stop words
+3. Move processed originals to done_dir (preserving both original and unsilenced versions)
 """
 
 import sys
